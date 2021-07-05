@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "iotube-analytics",
+  "private_key_id": "567458b609bd4f942abf8941bc1df49188de32ee",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDCy1Y7EgrHVLR/\nEf0UUs6b6gUoyEK5+Hv4X5F2+Dtte52mNun7MP+UCpe1WVa/LXrPdnOlYmjEQdmf\n4Yb7rCcNRFYBLH7AEqkWOyBrNmxK5wHjDM0AQoty//03KrVvuanzOVxYkB6HZjk5\nNhhUqeN2iEAzmCOqoudzbqTaGpfJoW6xFdGPmBrYxc3OcD16Ys+nI0e7puj7PFvm\nL6gscLOJfyM6nuVzNsBsKLIOL2nJ5B9Xm5boJ3sLCQaLtZ5yMsEsZomCOWkRnkOw\nKnmCylPqO/T94D1lAIalVOqbIKGJDxV6Ix6pvdDrBDlOA00AxDGoshNqUTJjUh1c\n+FyOljYHAgMBAAECggEAAi6LpRoRPkim/SBDEM7SMGNvebETNAjT2/p+f6rpx+80\nzMhN5oDd8Gx/8xCpmwUiONjEvyszEOAgnCsAAo0UzVcvGzQl/i9QNhUlH8HadlT6\n1mAKRjmjQI2OBufFDtCxR8oyaKbe0Y6l8qgn2Cp53LJoGa9lnYpHdfCV7qrLB6pi\nf4BUH3XlXiq0dTb6vTmPOh+dOflLZYCXBuBqIcfJIvHSYSIunZmw8TTSSLtejbBS\nwkmbnuDqvhXvLL52ibA1iLglo2rMDibrubrUrzpnGVK9AegnzW5N79dsf42F3h4E\nPHEkLbIcGTNum/J3Efu8jB/NTNu4FK6iPTP0IvyuHQKBgQDn+PG9RwIbiLRST0PL\ncoh7p35dJRkzAe6X3wljclgrTKjfKfn5tgihCaQJEz6j+uPwMCjeUskZrW9cbPGq\nwH19p/ppfLtdEIzlALH78Lb6wQGT4KW0IncE+BVONQ1RbssmkFmOgmNU1c/+CZJv\n5zl7zE48I0EMlfoxUA+BQI1AgwKBgQDW+JCN9CTKsCld64UyxywbV0ErNhkjiDK1\nUI/WzbFyuo47v9lW/x8/Ss7tX8+F1Pjv1lBc2SXwGWql1ZPI3JhqHhlFCzYKRzaS\n1CqYP6TWFr456C59UHMiziglT0OLl7geBynkQjkEws++AyQdIdzoPs8HlNO4J86t\nvV3g7MJ1LQKBgQDhqyEhTc8TEi66VDpT1ZxJD2yzGMAnCx4dyPDNOhPkK7OtRpzU\n/O3wG/zkh0BNLmpI49EeV9Mjk8HeXG3N+20ZrSzDKoDrzIoEzmRYAJlB4Dm0rrsF\nPvIid2Xiq2HFcs9XON6m8NnJUigBrzYyfvNBKESD5JgHsm+vQX+T8kR4GQKBgQDD\ni8H6zu40zgAjJh247gKKMFngk8pUTw1Jb6oYTG2xHlBJu59ZiqMC8OrAdNoSNIPp\nrzrU6taezI/9oAVZvoiKZyy3aJZUzSiwcXz5l1M7R97sT+8SIP9K1tsf7TVVIsLh\n1cRelXrGgOt2Pec49Ne9D31FuTTKHLPdyRc/hj7xVQKBgQCWdQLuqcy8gYbA+/pE\nOX5DCYkWIVnr/CM653OxJ5gmGuhDTyfqdgyrbmB/uuheV7w/RfzTVAGRCFTIxzAl\n1ZRYIHQHKZ+0mk7efsEMUS9/wze74/wzj3VykWpkhwkLFVruG2icjBbBptaVAPqj\ng6UBGI+Ysla7ZZFTFB0PYenEhg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "gitcoin-bount-admin@iotube-analytics.iam.gserviceaccount.com",
+  "client_id": "109984414604630574539",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gitcoin-bount-admin%40iotube-analytics.iam.gserviceaccount.com"
+}
