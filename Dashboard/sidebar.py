@@ -36,7 +36,7 @@ navbar = dbc.Navbar([
             align="center",
             no_gutters=True,
         ), 
-        href="https://plotly.com",
+        href="/",
     ),
     dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
     dbc.Collapse(
