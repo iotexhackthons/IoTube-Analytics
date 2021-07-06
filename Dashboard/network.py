@@ -163,7 +163,7 @@ def update_line_chart(value, data):
     
     mask = networkStats.Network.isin(value)
     fig = px.line(networkStats[mask], 
-        x="Date", y="CummulativeTotalTxnFee", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
+        x="Date", y="CummulativeTotalTxnFee", color="Network", color_discrete_sequence=["#38FF99", "red", "goldenrod", "magenta"],
         title="2021 Cummulative Network Transaction Fees (in USD) [log scale]", log_y=True, template='plotly_dark').update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
@@ -177,7 +177,7 @@ def update_line_chart(value, data):
     
     mask = networkStats.Network.isin(value)
     fig = px.line(networkStats[mask], 
-        x="Date", y="CummulativeTotalGasUsed", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
+        x="Date", y="CummulativeTotalGasUsed", color="Network", color_discrete_sequence=["#38FF99", "red", "goldenrod", "magenta"],
         title="2021 Cummulative Total Gas Used (in gwei) [log scale]", log_y=True, template='plotly_dark').update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
@@ -190,7 +190,7 @@ def update_line_chart(value, data):
     networkStats = pd.read_json(data, orient='split')
     
     fig = px.line(networkStats[networkStats["Network"] == "IoTeX"], 
-        x="Date", y="AvgTxnFeeUSD", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
+        x="Date", y="AvgTxnFeeUSD", color="Network", color_discrete_sequence=["#38FF99", "red", "goldenrod", "magenta"],
         title="Average Network Transation Fee (in USD)", template='plotly_dark').update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
@@ -205,7 +205,7 @@ def update_line_chart(value, data):
     mask = networkStats.Network.isin(value)
 
     fig = px.line(networkStats[mask], 
-        x="Date", y="TotalTxnFeeUSD", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
+        x="Date", y="TotalTxnFeeUSD", color="Network", color_discrete_sequence=["#38FF99", "red", "goldenrod", "magenta"],
         title="Total Network Transaction Fees (in USD)", template='plotly_dark').update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
