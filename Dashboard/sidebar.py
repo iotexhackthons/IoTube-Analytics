@@ -16,9 +16,9 @@ IOTUBE_LOGO = "https://tube.iotex.io/static/media/logo_iotube.81e6aa74.svg"
 
 buttons = dbc.Row(
     [
-        dbc.NavLink("Overview", href="/", active="exact", style=NAVLINK),
-        dbc.NavLink("Cross-chain Analytics", href="/crossChain", active="exact", style=NAVLINK),
-        dbc.NavLink("Cross-chain Token Transfer Analytics", href="/crossChainTokens", active="exact", style=NAVLINK),
+        dbc.NavLink("Network Overview", href="/", active="exact", style=NAVLINK),
+        dbc.NavLink("Bridge Analytics", href="/crossChain", active="exact", style=NAVLINK),
+        dbc.NavLink("Bridge Token Transfer Analytics", href="/crossChainTokens", active="exact", style=NAVLINK),
     ],
     no_gutters=True,
     className="ml-auto flex-nowrap mt-3 mt-md-0",
