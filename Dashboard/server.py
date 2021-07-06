@@ -7,6 +7,6 @@ from pandas.core.frame import DataFrame
 import os
 
 # Create the Dash app
-app = Dash(external_stylesheets=[dbc.themes.FLATLY])
+app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG])
 server = app.server
 app.title = 'iOTube Analytics'

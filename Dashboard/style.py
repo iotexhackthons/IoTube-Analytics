@@ -7,10 +7,10 @@ NAVBAR_STYLE = {
 }
 
 CONTENT_STYLE = {
-    "margin-top": "75px",
-    "margin-left": "2rem",
-    "margin-right": "2rem",
-    "padding": "2rem 1rem",
+    "padding-top": "75px",
+    "padding-left": "2rem",
+    "padding-right": "2rem",
+    "background-color": "#3B3B3B",
 }
 
 NAVLINK = {
@@ -21,10 +21,23 @@ NAVLINK = {
     "font-size": "14px"
 }
 
+HEADING = {
+    "font-family": 'DM Mono, monospace',
+    "font-size": "34px"
+}
+
+TEXT = {
+    "font-family": 'DM Mono, monospace',
+    "font-size": "14px"
+}
+
 COLUMN = {
-    "width": "45%",
+    "width": "40%",
     "display": "inline-block",
-    "margin": "10px",
+    "padding": "10px",
+    "margin": "20px",
+    "border-radius": "25px",
+    "background-color": "#262525",
 }
 
 GRAPHS = {

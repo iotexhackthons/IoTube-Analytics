@@ -1,0 +1,7 @@
+.modebar{
+    display: none !important;
+}
+
+* {
+    font-family: 'DM Mono, monospace',
+}
