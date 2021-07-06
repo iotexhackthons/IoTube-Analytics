@@ -63,6 +63,7 @@ network = html.Div(
     ]
 )
 
+# Load data
 @app.callback(
     Output('intermediate-value-in-0', 'data'),
     [dash.dependencies.Input('in-load', 'n_clicks')])
@@ -75,7 +76,6 @@ def update_output(n_clicks):
     [dash.dependencies.Input('in-load', 'n_clicks')])
 def update_output(n_clicks):
     networkStats = pd.read_csv('https://storage.googleapis.com/iotube/networkStatsNew')
-    print(networkStats.shape)
     return networkStats.to_json(date_format='iso', orient='split')
 
 @app.callback(
@@ -83,7 +83,6 @@ def update_output(n_clicks):
     [dash.dependencies.Input('in-load', 'n_clicks')])
 def update_output(n_clicks):
     df = pd.read_csv('https://storage.googleapis.com/iotube/yearHourData')
-    print(df.shape)
     return df.to_json(date_format='iso', orient='split')
 
 @app.callback(
@@ -91,9 +90,9 @@ def update_output(n_clicks):
     [dash.dependencies.Input('in-load', 'n_clicks')])
 def update_output(n_clicks):
     df = pd.read_csv('https://storage.googleapis.com/iotube/newHourData')
-    print(df.shape)
     return df.to_json(date_format='iso', orient='split')
     
+# Daily Transactions
 @app.callback(
     Output("allTxns", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -108,6 +107,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     return fig
 
+# Daily Active Addresses
 @app.callback(
     Output("uniqueAddresses", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -122,6 +122,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     return fig
 
+# Action Count
 @app.callback(
     Output("hourData", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -138,6 +139,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     return fig
 
+# Action Count 24 Hours
 @app.callback(
     Output("hourDataRecent", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -154,6 +156,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     return fig
 
+# Cummulative Txn Fee in USD
 @app.callback(
     Output("cummulativeNetworkFee", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -168,6 +171,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
 
+# Cummulative Txn Fee in gwei
 @app.callback(
     Output("cummulativeGasUsed", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -182,6 +186,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
 
+# Average Txn Fee in USD
 @app.callback(
     Output("networkStats1", "figure"), 
     Input(component_id='checklist', component_property='value'),
@@ -195,6 +200,7 @@ def update_line_chart(value, data):
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
 
+# Total Txn Fee in USD
 @app.callback(
     Output("networkStats2", "figure"), 
     Input(component_id='checklist', component_property='value'),
