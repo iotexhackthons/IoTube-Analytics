@@ -40,6 +40,14 @@ COLUMN = {
     "background-color": "#262525",
 }
 
+COLUMNFULL = {
+    "width": "100%",
+    "display": "inline-block",
+    "padding": "10px",
+    "border-radius": "25px",
+    "background-color": "#262525",
+}
+
 GRAPHS = {
     "width": "100%",
 }
