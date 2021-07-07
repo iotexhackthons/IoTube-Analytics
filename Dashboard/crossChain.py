@@ -21,6 +21,10 @@ def loadData():
     df = pd.read_csv('https://storage.googleapis.com/iotube/bridgeInflow')
     return df
 
+def loadDataOut():
+    df = pd.read_csv('https://storage.googleapis.com/iotube/bridgeOutflow')
+    return df
+
 def filter(value, inDf):
     mask = inDf.Network.isin(value)
     inDf = inDf[mask]
@@ -73,6 +77,16 @@ crossChain = html.Div(
 def update_output(n_clicks):
     if(n_clicks == 0):
         dfIn = loadData()
+        n_clicks = n_clicks+1
+        return dfIn.to_json(date_format='iso', orient='split')
+
+# Load data
+@app.callback(
+    Output('intermediate-value-out', 'data'),
+    [dash.dependencies.Input('in-load', 'n_clicks')])
+def update_output(n_clicks):
+    if(n_clicks == 0):
+        dfIn = loadDataOut()
         n_clicks = n_clicks+1
         return dfIn.to_json(date_format='iso', orient='split')
 
