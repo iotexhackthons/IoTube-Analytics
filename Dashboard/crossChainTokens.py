@@ -58,7 +58,7 @@ crossChainTokens = html.Div(
                     dcc.Graph(id='token-graph', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     dcc.Graph(id='token-area', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     
-                    html.H5("Select network and paramter for chain-specific statistics:", style=TEXTMARGIN),
+                    html.H5("Select network and parameter for chain-specific statistics:", style=TEXTMARGIN),
                     dbc.Row([
                         dbc.Col(dcc.Dropdown(id='type-select',
                         options=[{'label': i, 'value': i}

@@ -21,7 +21,8 @@ from .style import *
 app.layout = html.Div([
     dcc.Location(id="url"), 
     html.Div(navbar), 
-    html.Div(content)
+    html.Div(content),
+    html.Div(footer), 
 ])
 
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])

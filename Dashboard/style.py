@@ -6,6 +6,10 @@ NAVBAR_STYLE = {
     "background-color": "#262525",
 }
 
+FOOTER_STYLE = {
+    "background-color": "#262525",
+}
+
 CONTENT_STYLE = {
     "padding-top": "75px",
     "padding-left": "2rem",

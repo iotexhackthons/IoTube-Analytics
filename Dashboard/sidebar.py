@@ -13,6 +13,7 @@ from .style import *
 
 # ---COMPONENTS---
 IOTUBE_LOGO = "https://tube.iotex.io/static/media/logo_iotube.81e6aa74.svg"
+MISFITS_LOGO = "https://raw.githubusercontent.com/skhiearth/VacSeen/main/UI%20Elements/misfits_logo.png"
 
 buttons = dbc.Row(
     [
@@ -43,5 +44,20 @@ navbar = dbc.Navbar([
         buttons, id="navbar-collapse", navbar=True, is_open=False
     ),
 ], color="#3B3B3B", dark=True, style=NAVBAR_STYLE, sticky="top")
+
+footer = dbc.Navbar([
+    html.A(
+        # Use row and col to control vertical alignment of logo / brand
+        dbc.Row(
+            [
+                dbc.Col(html.Img(src=MISFITS_LOGO, height="30px")),
+                dbc.Col(dbc.NavbarBrand("Made by The Misfits for Grants Round 10 Hackathon by Gitcoin and IoTeX", className="ml-3")),
+            ],
+            align="center",
+            no_gutters=True,
+        ), 
+        href="http://themisfits.xyz/",
+    ),
+], color="#3B3B3B", dark=True, style=FOOTER_STYLE)
 
 content = html.Div(id="page-content", style=CONTENT_STYLE)
