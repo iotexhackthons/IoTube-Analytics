@@ -269,16 +269,37 @@ def crossChainGrouping(inDf):
     '''
     Group bridge transactions by network
     '''
-    flowDf = inDf.groupby(["Network", "Date"]).agg({'Value': ['sum', 'mean', 'median'],
+    flowDf = inDf.groupby(["Network", "Date"]).agg({'Value': ['count', 'sum', 'mean', 'median'],
                                                                 'Transaction Fee': ['sum', 'mean', 'median']})
     flowDf['Value']['sum'] = flowDf['Value']['sum'].round()
     flowDf['Transaction Fee']['sum'] = flowDf['Transaction Fee']['sum']
 
     flowDf = flowDf.reset_index()
     flowDf.columns = flowDf.columns.droplevel(0)
-    flowDf.columns = ['Network', 'Date', 'Volume', 'Mean Volume', 'Median Volume', 'Transaction Fee', 'Mean Txn Fee', 'Median Txn Fee']
+    flowDf.columns = ['Network', 'Date', 'Frequency', 'Volume', 'Mean Volume', 'Median Volume', 'Transaction Fee', 'Mean Txn Fee', 'Median Txn Fee']
     
     return flowDf
+
+
+def tokenGrouping(inDf):
+    '''
+    Bridge data grouping by token
+    '''
+    dfInGroupedToken = inDf.groupby(["Token Symbol", "Date"], as_index=False).agg({'Value': ['count', 'sum', 'mean', 'median']})
+    dfInGroupedToken['Value']['sum'] = dfInGroupedToken['Value']['sum'].round()
+
+    dfInGroupedToken = dfInGroupedToken.reset_index()
+    dfInGroupedToken.columns = dfInGroupedToken.columns.droplevel(0)
+    dfInGroupedToken.columns = ['', 'Token Symbol', 'Date', 'Frequency', 'Volume', 'Average Value', 'Median']
+
+    dfInGroupedPeriod = inDf.groupby(["Network", "Token Symbol", "Date"], as_index=False).agg({'Value': ['count', 'sum', 'mean', 'median']})
+    dfInGroupedPeriod['Value']['sum'] = dfInGroupedPeriod['Value']['sum'].round()
+
+    dfInGroupedPeriod = dfInGroupedPeriod.reset_index()
+    dfInGroupedPeriod.columns = dfInGroupedPeriod.columns.droplevel(0)
+    dfInGroupedPeriod.columns = ['', 'Network', 'Token Symbol', 'Date', 'Frequency', 'Volume', 'Average Value', 'Median']
+    
+    return dfInGroupedToken, dfInGroupedPeriod
 
 
 # Execute Scheduler Functions
@@ -293,4 +314,6 @@ if __name__ == "__main__":
     bsc = getBridgeDataIn("BSC")
     dfToIotex = polygon.append([ethereum, bsc])
     upload_blob("iotube", dfToIotex.to_csv(), "bridgeInflowRaw")
-    upload_blob("iotube", crossChainGrouping(dfToIotex).to_csv(), "crossChainInflow")
+    upload_blob("iotube", crossChainGrouping(dfToIotex).to_csv(), "bridgeInflow")
+    upload_blob("iotube", tokenGrouping(dfToIotex)[0].to_csv(), "bridgeInflowToken")
+    upload_blob("iotube", tokenGrouping(dfToIotex)[1].to_csv(), "bridgeInflowTokenPeriod")

@@ -31,6 +31,12 @@ TEXT = {
     "font-size": "14px"
 }
 
+TEXTMARGIN = {
+    "margin-top": "30px",
+    "font-family": 'DM Mono, monospace',
+    "font-size": "14px"
+}
+
 COLUMN = {
     "width": "40%",
     "display": "inline-block",

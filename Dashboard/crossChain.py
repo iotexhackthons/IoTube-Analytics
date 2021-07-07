@@ -18,7 +18,7 @@ from .style import *
 
 # Load and filter the dataset
 def loadData():
-    df = pd.read_csv('https://storage.googleapis.com/iotube/crossChainInflow')
+    df = pd.read_csv('https://storage.googleapis.com/iotube/bridgeInflow')
     return df
 
 def filter(value, inDf):
