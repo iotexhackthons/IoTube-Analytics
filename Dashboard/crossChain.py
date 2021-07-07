@@ -59,8 +59,8 @@ crossChain = html.Div(
             ]
         ),
         dbc.Row(children=[
-                dbc.Col(dcc.Graph(id="uniqueUsers", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
-                dbc.Col(dcc.Graph(id="averageValue", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
+                dbc.Col(dcc.Graph(id="frequency", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
+                dbc.Col(dcc.Graph(id="txnFees", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
             ]
         ),
     ]
@@ -105,19 +105,19 @@ def update_line_chart(value, dfIn):
     )
     return fig
 
-# Unique users inflow
+# Frequency
 @app.callback(
-    Output("uniqueUsers", "figure"), 
+    Output("frequency", "figure"), 
     Input(component_id='bridge-select', component_property='value'),
     Input('intermediate-value-in', 'data'))
 def update_line_chart(value, dfIn):
-    dfPolygonIn = pd.read_json(dfIn, orient='split')
-    dfPolygonInGrouped = filter(value, dfPolygonIn)
+    dfIn = pd.read_json(dfIn, orient='split')
+    grouped = filter(value, dfIn)
 
-    fig = px.bar(dfPolygonInGrouped, 
-            x=dfPolygonInGrouped['Date'], 
-            y=dfPolygonInGrouped['Unique Addresses'], 
-            color=dfPolygonInGrouped['Bridge'],
+    fig = px.bar(grouped, 
+            x=grouped['Date'], 
+            y=grouped['Frequency'], 
+            color=grouped['Network'],
             color_discrete_sequence=["#8147E5", "red", "goldenrod"],
        title="Unique users count transferring to IoTeX", template='plotly_dark').update_layout(
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
@@ -134,22 +134,22 @@ def update_line_chart(value, dfIn):
     )
     return fig
 
-# Average transfer volume inflow
+# Transaction Fees
 @app.callback(
-    Output("averageValue", "figure"), 
+    Output("txnFees", "figure"), 
     Input(component_id='bridge-select', component_property='value'),
     Input('intermediate-value-in', 'data'))
 def update_line_chart(value, dfIn):
-    dfPolygonIn = pd.read_json(dfIn, orient='split')
+    dfIn = pd.read_json(dfIn, orient='split')
 
-    dfPolygonInGrouped = filter(value, dfPolygonIn)
+    grouped = filter(value, dfIn)
 
-    fig = px.bar(dfPolygonInGrouped, 
-            x=dfPolygonInGrouped['Date'], 
-            y=dfPolygonInGrouped['Average Transfer Volume'], 
-            color=dfPolygonInGrouped['Bridge'], 
+    fig = px.bar(grouped, 
+            x=grouped['Date'], 
+            y=grouped['Mean Txn Fee'], 
+            color=grouped['Network'], log_y = True,
             color_discrete_sequence=["#8147E5", "red", "goldenrod"],
-       title="Average transfer volume per user into IoTeX", template='plotly_dark').update_layout(
+       title="Average Transaction Fees by Network into IoTeX (log scale)", template='plotly_dark').update_layout(
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     fig.update_xaxes(
     rangeslider_visible=True,
