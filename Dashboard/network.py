@@ -43,11 +43,6 @@ network = html.Div(
             ]
         ),
         dbc.Row(children=[
-                dbc.Col(dcc.Graph(id="hourData", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
-                dbc.Col(dcc.Graph(id="hourDataRecent", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
-            ]
-        ),
-        dbc.Row(children=[
                 dbc.Col(dcc.Graph(id="cummulativeNetworkFee", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
             ]
         ),
@@ -119,40 +114,6 @@ def update_line_chart(value, data):
     fig = px.line(txnsByDate[mask], 
         x="Date", y="Addresses", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
         title="Daily Active Addresses (Unique)", template='plotly_dark').update_layout(
-        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
-    return fig
-
-# Action Count
-@app.callback(
-    Output("hourData", "figure"), 
-    Input(component_id='checklist', component_property='value'),
-    Input('intermediate-value-in-000', 'data'))
-def update_line_chart(value, data):
-    hourData = pd.read_json(data, orient='split')
-
-    fig = px.bar(hourData, 
-        x="Hour", y="NoOfActions", title="Hourly Action Count - Calendar Year",
-        color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
-            labels={
-                "Hour": "Hour (UTC)",
-            }, template='plotly_dark').update_layout(
-        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
-    return fig
-
-# Action Count 24 Hours
-@app.callback(
-    Output("hourDataRecent", "figure"), 
-    Input(component_id='checklist', component_property='value'),
-    Input('intermediate-value-in-0000', 'data'))
-def update_line_chart(value, data):
-    hourData = pd.read_json(data, orient='split')
-
-    fig = px.bar(hourData, 
-        x="Hour", y="NoOfActions", title="Hourly Action Count - Last 24 Hours", 
-        color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
-            labels={
-                "Hour": "Hour (UTC)",
-            }, template='plotly_dark').update_layout(
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     return fig
 
