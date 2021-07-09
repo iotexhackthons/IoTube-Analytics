@@ -47,10 +47,6 @@ network = html.Div(
             ]
         ),
         dbc.Row(children=[
-                dbc.Col(dcc.Graph(id="cummulativeGasUsed", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
-            ]
-        ),
-        dbc.Row(children=[
                 dbc.Col(dcc.Graph(id="networkStats1", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
                 dbc.Col(dcc.Graph(id="networkStats2", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
             ]
@@ -129,21 +125,6 @@ def update_line_chart(value, data):
     fig = px.line(networkStats[mask], 
         x="Date", y="CummulativeTotalTxnFee", color="Network", color_discrete_sequence=["#38FF99", "red", "goldenrod", "magenta"],
         title="2021 Cummulative Network Transaction Fees (in USD) [log scale]", log_y=True, template='plotly_dark').update_layout(
-        {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
-    return fig
-
-# Cummulative Txn Fee in gwei
-@app.callback(
-    Output("cummulativeGasUsed", "figure"), 
-    Input(component_id='checklist', component_property='value'),
-    Input('intermediate-value-in-00', 'data'))
-def update_line_chart(value, data):
-    networkStats = pd.read_json(data, orient='split')
-    
-    mask = networkStats.Network.isin(value)
-    fig = px.line(networkStats[mask], 
-        x="Date", y="CummulativeTotalGasUsed", color="Network", color_discrete_sequence=["#38FF99", "red", "goldenrod", "magenta"],
-        title="2021 Cummulative Total Gas Used (in gwei) [log scale]", log_y=True, template='plotly_dark').update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'})
     return fig
 
