@@ -1,6 +1,8 @@
 # IoTube-Analytics
 Source code for the IoTube Bridge Analytics dashboard by The Misfits for Grants Round 10 Hackathon by Gitcoin and IoTeX 
 
+Access the application [here](https://iotube-dashboard.herokuapp.com/)
+
 ### VIDEO WALKTHROUGHS:
 
 For a detailed video explanation with voice-over, click [here]().
@@ -37,5 +39,5 @@ The dashboard follows the UI aesthetic of the bridge web application and due to 
 
 Clone the GitHub repo on your local machine. Navigate to the project folder in the terminal and run ` pip install -r requirements.txt` to install dependencies. Open the workspace in a code editor of choice and run the `app.py` file. Navigate to `http://127.0.0.1:8050/` (or your default location) in your browser to access alocal version of the dashboard or navigate to `https://iotube-dashboard.herokuapp.com/` to access a live version.
 
-Made with ❤️ by [Simran](https://simmsss.github.io/) and [Utkarsh](https://skhiearth.github.io/)
+Made with 🤘 by [Simran](https://simmsss.github.io/) and [Utkarsh](https://skhiearth.github.io/)
 
