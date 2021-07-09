@@ -21,7 +21,7 @@ The analytics dashboard provides an interactive way to monitor flow of funds acr
 
 The dashboard follows the UI aesthetic of the bridge web application and due to integration of Bootstrap, it is responsive on mobile and smaller devices.
 
-![Technical framework]()
+![Technical framework](https://raw.githubusercontent.com/skhiearth/IoTube-Analytics/main/Implementation.jpg)
 
 ### Requirements
 
