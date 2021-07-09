@@ -90,7 +90,6 @@ def update_output(n_clicks):
     Input('intermediate-value-in-0', 'data'))
 def update_line_chart(value, data):
     txnsByDate = pd.read_json(data, orient='split')
-    txnsByDate = txnsByDate[txnsByDate['Date'] < pd.Timestamp('today').floor('D')]
     mask = txnsByDate.Network.isin(value)
     fig = px.line(txnsByDate[mask], 
         x="Date", y="Transactions", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
@@ -105,7 +104,6 @@ def update_line_chart(value, data):
     Input('intermediate-value-in-0', 'data'))
 def update_line_chart(value, data):
     txnsByDate = pd.read_json(data, orient='split')
-    txnsByDate = txnsByDate[txnsByDate['Date'] < pd.Timestamp('today').floor('D')]
     mask = txnsByDate.Network.isin(value)
     fig = px.line(txnsByDate[mask], 
         x="Date", y="Addresses", color="Network", color_discrete_sequence=["#38FF99", "#8147E5", "red", "goldenrod", "magenta"],
