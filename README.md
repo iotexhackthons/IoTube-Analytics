@@ -5,7 +5,7 @@ Access the application [here](https://iotube-dashboard.herokuapp.com/)
 
 ### VIDEO WALKTHROUGHS:
 
-For a detailed video explanation with voice-over, click [here]().
+For a detailed video explanation with voice-over, click [here](https://www.youtube.com/watch?v=PjYpNkuaAkg).
 
 ### WHAT IT DOES? 
 
