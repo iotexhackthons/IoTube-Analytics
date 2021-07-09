@@ -54,17 +54,23 @@ crossChain = html.Div(
                     dbc.Row([
                         dbc.Col(children=[
                             html.Div(id='in-load', n_clicks=0),
+                            html.Div(id='out-load', n_clicks=0),
                         ]),
                     ]),
                     
                     dcc.Graph(id='price-graph', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
-                    # dcc.Graph(id='price-graph-out')
+                    dcc.Graph(id='price-graph-out', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                 ])),
             ]
         ),
         dbc.Row(children=[
                 dbc.Col(dcc.Graph(id="frequency", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
-                dbc.Col(dcc.Graph(id="txnFees", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
+                dbc.Col(dcc.Graph(id="frequencyOut", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
+            ]
+        ),
+        dbc.Row(children=[
+                dbc.Col(dcc.Graph(id="txnFees", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN),
+                dbc.Col(dcc.Graph(id="txnFeesOut", style=GRAPHS, figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}), style=COLUMN)
             ]
         ),
     ]
@@ -80,15 +86,15 @@ def update_output(n_clicks):
         n_clicks = n_clicks+1
         return dfIn.to_json(date_format='iso', orient='split')
 
-# Load data
+# Load data out
 @app.callback(
     Output('intermediate-value-out', 'data'),
-    [dash.dependencies.Input('in-load', 'n_clicks')])
+    [dash.dependencies.Input('out-load', 'n_clicks')])
 def update_output(n_clicks):
     if(n_clicks == 0):
-        dfIn = loadDataOut()
+        dfOut = loadDataOut()
         n_clicks = n_clicks+1
-        return dfIn.to_json(date_format='iso', orient='split')
+        return dfOut.to_json(date_format='iso', orient='split')
 
 # Inflow Volume
 @app.callback(
@@ -105,6 +111,35 @@ def update_line_chart(value, dfIn):
             color=dfInflow['Network'],
             color_discrete_sequence=["goldenrod", "#8147E5", "red"],
        title="Bridge volume inflow to IoTeX (Log Scale)", log_y=True, template='plotly_dark').update_layout(
+        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
+    fig.update_xaxes(
+    rangeslider_visible=True,
+    rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(step="all")
+            ])
+        )
+    )
+    return fig
+
+# Outflow Volume
+@app.callback(
+    Output("price-graph-out", "figure"), 
+    Input(component_id='bridge-select', component_property='value'),
+    Input('intermediate-value-out', 'data'))
+def update_line_chart(value, dfOut):
+    dfOutflow = pd.read_json(dfOut, orient='split')
+    dfOutflow = filter(value, dfOutflow)
+
+    fig = px.area(dfOutflow, 
+            x=dfOutflow['Date'], 
+            y=dfOutflow['Volume'], 
+            color=dfOutflow['Network'],
+            color_discrete_sequence=["goldenrod", "#8147E5", "red"],
+       title="Bridge volume outflow from IoTeX to other chains (Log Scale)", log_y=True, template='plotly_dark').update_layout(
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     fig.update_xaxes(
     rangeslider_visible=True,
@@ -148,6 +183,35 @@ def update_line_chart(value, dfIn):
     )
     return fig
 
+# Frequency
+@app.callback(
+    Output("frequencyOut", "figure"), 
+    Input(component_id='bridge-select', component_property='value'),
+    Input('intermediate-value-out', 'data'))
+def update_line_chart(value, dfIn):
+    dfIn = pd.read_json(dfIn, orient='split')
+    grouped = filter(value, dfIn)
+
+    fig = px.bar(grouped, 
+            x=grouped['Date'], 
+            y=grouped['Frequency'], 
+            color=grouped['Network'],
+            color_discrete_sequence=["#8147E5", "red", "goldenrod"],
+       title="Unique users count transferring out of IoTeX", template='plotly_dark').update_layout(
+        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
+    fig.update_xaxes(
+    rangeslider_visible=True,
+    rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(step="all")
+            ])
+        )
+    )
+    return fig
+
 # Transaction Fees
 @app.callback(
     Output("txnFees", "figure"), 
@@ -164,6 +228,36 @@ def update_line_chart(value, dfIn):
             color=grouped['Network'], log_y = True,
             color_discrete_sequence=["#8147E5", "red", "goldenrod"],
        title="Average Transaction Fees by Network into IoTeX (log scale)", template='plotly_dark').update_layout(
+        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
+    fig.update_xaxes(
+    rangeslider_visible=True,
+    rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(step="all")
+            ])
+        )
+    )
+    return fig
+
+# Transaction Fees
+@app.callback(
+    Output("txnFeesOut", "figure"), 
+    Input(component_id='bridge-select', component_property='value'),
+    Input('intermediate-value-out', 'data'))
+def update_line_chart(value, dfIn):
+    dfIn = pd.read_json(dfIn, orient='split')
+
+    grouped = filter(value, dfIn)
+
+    fig = px.bar(grouped, 
+            x=grouped['Date'], 
+            y=grouped['Mean Txn Fee'], 
+            color=grouped['Network'], log_y = True,
+            color_discrete_sequence=["#8147E5", "red", "goldenrod"],
+       title="Average Transaction Fees by Network out of IoTeX (log scale)", template='plotly_dark').update_layout(
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     fig.update_xaxes(
     rangeslider_visible=True,

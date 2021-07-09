@@ -30,6 +30,11 @@ validator = {
     "Ethereum": "0xd8165188ccc135b3a3b2a5d2bc3af9d94753d955",
     "BSC": "0x116404F86e97846110EA08cd52fC2882d4AD3123"
 }
+cashier = {
+    "Polygon": "0xf72CFb704d49aC7BB7FFa420AE5f084C671A29be",
+    "Ethereum": "0xa0fd7430852361931b23a31f84374ba3314e1682",
+    "BSC": "0x797f1465796fd89ea7135e76dbc7cdb136bba1ca"
+}
 
 
 
@@ -107,6 +112,44 @@ def getBridgeDataIn(network):
                             
     dfToIotex['Date'] = pd.to_datetime(dfToIotex['Date'])
     return dfToIotex
+
+
+# Outflow Bridge Data
+def getBridgeDataOut(network):
+    '''
+    Gets outflow bridge data for a given network
+    '''
+    dfFromIotex = pd.DataFrame(columns = ['Network', 'Date', 'Address', 'Transaction Fee', 'Token Name', 'Token Symbol', 'Value'])
+    endpoint = "https://api.covalenthq.com/v1/{}/address/{}/transactions_v2/?page-size={}&key={}".format(chain[network], cashier[network], 10000, COVALENT_KEY)
+    response = requests.get(endpoint)
+    JSON_DATA_RAW = response.json()
+    JSON_DATA_RAW = JSON_DATA_RAW['data']
+
+    for item in JSON_DATA_RAW['items']:
+        temp = []
+        temp.append(network)
+        temp.append(item['block_signed_at'].split("T", 1)[0]) # Date
+        temp.append(item['from_address']) # Address 
+        temp.append(item['gas_price'] * item['gas_spent'] * pow(10, -18)) # Transaction Fee
+        for event in item['log_events']:
+            if(event['decoded']):
+                if(event['decoded']['name'] == "Transfer"):
+                    for param in event['decoded']['params']:
+                        if(param["name"] == "to"):
+                            address = param['value'] 
+                        if(param["name"] == "value"):
+                            value = param['value']
+                    name = event['sender_name']
+                    symbol = event['sender_contract_ticker_symbol']
+                    decimals = -event['sender_contract_decimals']
+                    value = int(value) * pow(10,decimals)
+        temp.append(name) # Ticker Name
+        temp.append(symbol) # Ticker Symbol
+        temp.append(value) # Ticker Value
+        dfFromIotex.loc[len(dfFromIotex)] = temp
+                            
+    dfFromIotex['Date'] = pd.to_datetime(dfFromIotex['Date'])
+    return dfFromIotex
 
 
 
@@ -317,3 +360,13 @@ if __name__ == "__main__":
     upload_blob("iotube", crossChainGrouping(dfToIotex).to_csv(), "bridgeInflow")
     upload_blob("iotube", tokenGrouping(dfToIotex)[0].to_csv(), "bridgeInflowToken")
     upload_blob("iotube", tokenGrouping(dfToIotex)[1].to_csv(), "bridgeInflowTokenPeriod")
+
+    # Fetch bridge data - outflow
+    polygon = getBridgeDataOut("Polygon")
+    ethereum = getBridgeDataOut("Ethereum")
+    bsc = getBridgeDataOut("BSC")
+    dfFromIotex = polygon.append([ethereum, bsc])
+    upload_blob("iotube", dfFromIotex.to_csv(), "bridgeOutflowRaw")
+    upload_blob("iotube", crossChainGrouping(dfFromIotex).to_csv(), "bridgeOutflow")
+    upload_blob("iotube", tokenGrouping(dfFromIotex)[0].to_csv(), "bridgeOutflowToken")
+    upload_blob("iotube", tokenGrouping(dfFromIotex)[1].to_csv(), "bridgeOutflowTokenPeriod")

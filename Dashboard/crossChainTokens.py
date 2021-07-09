@@ -21,6 +21,11 @@ def loadData():
     tokensAndPeriod = pd.read_csv('https://storage.googleapis.com/iotube/bridgeInflowTokenPeriod')
     return tokens, tokensAndPeriod
 
+def loadDataOut():
+    tokens = pd.read_csv('https://storage.googleapis.com/iotube/bridgeOutflowToken')
+    tokensAndPeriod = pd.read_csv('https://storage.googleapis.com/iotube/bridgeOutflowTokenPeriod')
+    return tokens, tokensAndPeriod
+
 def filter(tokens, inDf):    
     mask = inDf["Token Symbol"].isin(tokens)
     inDf = inDf[mask]
@@ -53,10 +58,15 @@ crossChainTokens = html.Div(
                 dbc.Col(html.Div(children=[
                     dcc.Store(id='intermediate-value-in-2'),
                     dcc.Store(id='intermediate-value-in-3'),
+                    dcc.Store(id='intermediate-value-in-4'),
+                    dcc.Store(id='intermediate-value-in-5'),
                     html.Div(id='in-load'),
+                    html.Div(id='out-load'),
                     
                     dcc.Graph(id='token-graph', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
+                    dcc.Graph(id='token-graph-out', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     dcc.Graph(id='token-area', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
+                    dcc.Graph(id='token-area-out', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     
                     html.H5("Select network and parameter for chain-specific statistics:", style=TEXTMARGIN),
                     dbc.Row([
@@ -72,6 +82,7 @@ crossChainTokens = html.Div(
                     
 
                     dcc.Graph(id='token-area-network', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
+                    dcc.Graph(id='token-area-network-out', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                 ])),
             ]
         ),
@@ -90,6 +101,20 @@ def update_output(n_clicks):
     [dash.dependencies.Input('in-load', 'n_clicks')])
 def update_output(n_clicks):
     _, period = loadData()
+    return period.to_json(date_format='iso', orient='split')
+
+@app.callback(
+    Output('intermediate-value-in-4', 'data'),
+    [dash.dependencies.Input('out-load', 'n_clicks')])
+def update_output(n_clicks):
+    tokens, _ = loadDataOut()
+    return tokens.to_json(date_format='iso', orient='split')
+
+@app.callback(
+    Output('intermediate-value-in-5', 'data'),
+    [dash.dependencies.Input('out-load', 'n_clicks')])
+def update_output(n_clicks):
+    _, period = loadDataOut()
     return period.to_json(date_format='iso', orient='split')
 
 # Frequency of token transfers by date
@@ -116,6 +141,29 @@ def update_line_chart(dfIn):
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     return fig
 
+@app.callback(
+    Output("token-graph-out", "figure"), 
+    Input('intermediate-value-in-5', 'data'))
+def update_line_chart(dfIn):
+    df = pd.read_json(dfIn, orient='split')
+
+    vendors = df['Token Symbol']
+    regions = df.Network
+    count = df['Frequency'].values
+    dates = df['Date'].values
+
+    df = pd.DataFrame(
+        dict(vendors=vendors, regions=regions, dates=dates, count=count)
+    )
+
+    df["all"] = "all" # in order to have a single root node
+
+    fig = px.treemap(df, path=['all', 'regions', 'dates', 'vendors'], 
+                    values='count', title="Frequency of transactions from IoTeX to other chain via IoTube by token used by date (click to interact)",
+                    template='plotly_dark').update_layout(
+        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
+    return fig
+
 # Token stats
 @app.callback(
     Output("token-area", "figure"), 
@@ -132,6 +180,35 @@ def update_line_chart(tokens, type, dfIn):
             y=grouped[type], 
             color=grouped['Token Symbol'], log_y=True,
     title="{} of transfers into IoTeX by Token (log scale)".format(type), template='plotly_dark').update_layout(
+        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
+    fig.update_xaxes(
+    rangeslider_visible=True,
+    rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(step="all")
+            ])
+        )
+    )
+    return fig
+
+@app.callback(
+    Output("token-area-out", "figure"), 
+    Input(component_id='token-select', component_property='value'), 
+    Input(component_id='token-type-select', component_property='value'),
+    Input('intermediate-value-in-4', 'data'))
+def update_line_chart(tokens, type, dfIn):
+    dfIn = pd.read_json(dfIn, orient='split')
+
+    grouped = filter(tokens, dfIn)
+
+    fig = px.area(grouped, 
+            x=grouped['Date'], 
+            y=grouped[type], 
+            color=grouped['Token Symbol'], log_y=True,
+    title="{} of transfers from IoTeX by Token (log scale)".format(type), template='plotly_dark').update_layout(
         {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
     fig.update_xaxes(
     rangeslider_visible=True,
@@ -177,3 +254,33 @@ def update_line_chart(tokens, type, network, dfIn):
     )
     return fig
 
+# Token stats network outflow
+@app.callback(
+    Output("token-area-network-out", "figure"), 
+    Input(component_id='token-select', component_property='value'), 
+    Input(component_id='type-select', component_property='value'),
+    Input(component_id='network-select', component_property='value'),
+    Input('intermediate-value-in-5', 'data'))
+def update_line_chart(tokens, type, network, dfIn):
+    dfIn = pd.read_json(dfIn, orient='split')
+
+    grouped = filter(tokens, dfIn)
+    grouped = grouped[grouped["Network"] == network]
+    fig = px.area(grouped, 
+            x=grouped['Date'], 
+            y=grouped[type], 
+            color=grouped['Token Symbol'], log_y=True,
+    title="{} of transfers from IoTeX to {} by Token (log scale)".format(type, network), template='plotly_dark').update_layout(
+        {'plot_bgcolor': '#262525', 'paper_bgcolor': '#262525'})
+    fig.update_xaxes(
+    rangeslider_visible=True,
+    rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=3, label="3m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(step="all")
+            ])
+        )
+    )
+    return fig
