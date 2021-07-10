@@ -105,7 +105,7 @@ def update_line_chart(value, dfIn):
     dfInflow = pd.read_json(dfIn, orient='split')
     dfInflow = filter(value, dfInflow)
 
-    fig = px.area(dfInflow, 
+    fig = px.bar(dfInflow, 
             x=dfInflow['Date'], 
             y=dfInflow['Volume'], 
             color=dfInflow['Network'],
@@ -134,7 +134,7 @@ def update_line_chart(value, dfOut):
     dfOutflow = pd.read_json(dfOut, orient='split')
     dfOutflow = filter(value, dfOutflow)
 
-    fig = px.area(dfOutflow, 
+    fig = px.bar(dfOutflow, 
             x=dfOutflow['Date'], 
             y=dfOutflow['Volume'], 
             color=dfOutflow['Network'],

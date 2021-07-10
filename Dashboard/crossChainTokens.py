@@ -48,10 +48,6 @@ crossChainTokens = html.Div(
                         value=tokens[0:3],
                         labelStyle={'display': 'inline-block', 'margin': '5px'}
                 )),
-            dbc.Col(dcc.Dropdown(id='token-type-select',
-                options=[{'label': i, 'value': i}
-                        for i in tokensTypes],
-                value='Volume'))
         ], style={'margin-left': '10px'}),
         dbc.Row(
             [
@@ -65,6 +61,12 @@ crossChainTokens = html.Div(
                     
                     dcc.Graph(id='token-graph', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     dcc.Graph(id='token-graph-out', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
+                    
+                    dbc.Col(dcc.Dropdown(id='token-type-select',
+                    options=[{'label': i, 'value': i}
+                            for i in tokensTypes],
+                    value='Volume')),
+
                     dcc.Graph(id='token-area', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     dcc.Graph(id='token-area-out', figure={'layout': go.Layout(paper_bgcolor='#262525', plot_bgcolor='#262525')}, style=COLUMNFULL),
                     
@@ -175,7 +177,7 @@ def update_line_chart(tokens, type, dfIn):
 
     grouped = filter(tokens, dfIn)
 
-    fig = px.area(grouped, 
+    fig = px.bar(grouped, 
             x=grouped['Date'], 
             y=grouped[type], 
             color=grouped['Token Symbol'], log_y=True,
@@ -204,7 +206,7 @@ def update_line_chart(tokens, type, dfIn):
 
     grouped = filter(tokens, dfIn)
 
-    fig = px.area(grouped, 
+    fig = px.bar(grouped, 
             x=grouped['Date'], 
             y=grouped[type], 
             color=grouped['Token Symbol'], log_y=True,
