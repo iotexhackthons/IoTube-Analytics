@@ -130,7 +130,7 @@ def getBridgeDataOut(network):
         temp.append(network)
         temp.append(item['block_signed_at'].split("T", 1)[0]) # Date
         temp.append(item['from_address']) # Address 
-        temp.append(item['gas_price'] * item['gas_spent'] * pow(10, -18)) # Transaction Fee
+        temp.append(item['gas_price'] * item['gas_spent'] * pow(10, -9)) # Transaction Fee
         for event in item['log_events']:
             if(event['decoded']):
                 if(event['decoded']['name'] == "Transfer"):
