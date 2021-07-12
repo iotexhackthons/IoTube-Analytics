@@ -59,7 +59,7 @@ network = html.Div(
     Output('intermediate-value-in-0', 'data'),
     [dash.dependencies.Input('in-load', 'n_clicks')])
 def update_output(n_clicks):
-    txnsByDate = pd.read_csv('https://storage.googleapis.com/iotube/txnStatsByDate')
+    txnsByDate = pd.read_csv('https://storage.googleapis.com/iotube/txnStats')
     return txnsByDate.to_json(date_format='iso', orient='split')
 
 @app.callback(
